@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root {
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  font-weight: 400;
+  color: #111827;
+  background-color: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #42b883;
+  text-decoration: none;
+}
+a:hover {
+  color: #2bb473;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #ffffff;
+  letter-spacing: .01em;
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+h3 {
+  font-size: 1.125rem;
+  line-height: 1.35;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #f3f4f6;
+}
+
+.card {
+  padding: 2em;
+}
+
+#app {
+  margin: 0;
+  padding: 24px 0;
+  text-align: left;
+}
+
+p { margin: 6px 0 10px 0; }
+pre, code { font-family: var(--font-mono); }
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+:root {
+  --font-sans: Inter, "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, Roboto;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.prose { color: #0f172a; font-size: 16px; }
+.prose h1 { font-size: 28px; line-height: 1.25; font-weight: 700; margin: 0 0 16px 0; }
+.prose h2 { font-size: 22px; line-height: 1.35; font-weight: 700; margin: 16px 0 12px 0; }
+.prose h3 { font-size: 18px; line-height: 1.4; font-weight: 600; margin: 14px 0 8px 0; }
+.prose h4 { font-size: 16px; line-height: 1.4; font-weight: 600; margin: 12px 0 8px 0; }
+.prose p { margin: 8px 0 12px 0; color: #374151; }
+.prose a { color: #0ea5e9; text-decoration: none; }
+.prose a:hover { text-decoration: underline; }
+.prose kbd { font-family: var(--font-mono); background: #f3f4f6; border: 1px solid #e5e7eb; border-bottom-width: 3px; border-radius: 6px; padding: 1px 4px; font-size: 12px; }
+.prose strong { font-weight: 600; color: #111827; }
+.prose em { color: #374151; }
+.prose ul, .prose ol { margin: 8px 0 12px 0; padding-left: 20px; }
+.prose li { margin: 6px 0; }
+.prose blockquote { margin: 10px 0; padding-left: 12px; border-left: 3px solid #93c5fd; color: #374151; background: #f8fafc; }
+.prose code { font-family: var(--font-mono); background: #f3f4f6; color: #374151; border-radius: 6px; padding: 2px 6px; }
+.prose pre { font-family: var(--font-mono); background: #0f172a; color: #e5e7eb; border: 1px solid #1f2937; border-radius: 10px; padding: 12px; overflow: auto; }
+.prose hr { height: 1px; border: 0; background: #e5e7eb; margin: 18px 0; }
+.prose table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.prose th, .prose td { border: 1px solid #e5e7eb; padding: 8px; }
