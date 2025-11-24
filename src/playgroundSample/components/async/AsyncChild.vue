@@ -1,0 +1,1 @@
+<div style="border:1px solid #e5e7eb;padding:8px;border-radius:6px;">异步加载的子组件</div>

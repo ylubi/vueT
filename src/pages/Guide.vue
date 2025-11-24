@@ -4,7 +4,7 @@
     <div class="interactive-learning">
       <div class="playground-wrapper">
         <PlaygroundPane 
-          :files="files || interactiveCode" 
+          :files="slug === 'introduction' ? interactiveCode : files" 
           :mainFile="mainFile"
           class="main-playground"
           :learningTitle="data.title + '：学习说明'"
@@ -101,7 +101,7 @@ const getLearningPoints = () => {
       '⌨️ 按键修饰符：.enter/.esc等',
       '📤 参数传递：事件处理和数据传递'
     ],
-    'essentials-form-input': [
+    'essentials-forms': [
       '🔄 v-model：双向数据绑定',
       '📝 表单支持：各种表单元素',
       '✨ 修饰符：.lazy/.number/.trim',

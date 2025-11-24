@@ -123,7 +123,7 @@ const getKnowledgeData = () => {
         '📤 参数传递：事件处理和数据传递'
       ]
     },
-    'essentials-form-input': {
+    'essentials-forms': {
       title: '表单输入绑定',
       points: [
         '🔄 v-model：双向数据绑定',

@@ -1,0 +1,1 @@
+export default { install(app){ app.config.globalProperties.$greet = (n) => "Hello " + n } }

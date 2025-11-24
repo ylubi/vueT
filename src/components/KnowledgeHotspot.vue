@@ -88,7 +88,7 @@ const knowledgeMap = {
       '事件参数传递和处理'
     ]
   },
-  'essentials-form-input': {
+  'essentials-forms': {
     title: '表单输入绑定',
     points: [
       'v-model 双向数据绑定',
@@ -490,7 +490,7 @@ function handleKeyup(event) {
   }
 }`
     },
-    'essentials-form-input': {
+    'essentials-forms': {
       overview: '表单输入绑定',
       overviewText: 'Vue 使用 v-model 指令在表单输入元素上创建双向数据绑定，使得处理用户输入变得非常简单。',
       features: [
