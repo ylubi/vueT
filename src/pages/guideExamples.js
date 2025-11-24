@@ -476,7 +476,7 @@ export function getFiles(slug) {
         '  <section>',
         '    <h3>类与样式绑定演示</h3>',
         '    <div :class="{ active:isActive, error:hasError }">对象语法</div>',
-        '    <div :class="[ baseClass, isActive ? \"active\" : \"\" ]">数组语法</div>',
+        '    <div :class="[ baseClass, isActive ? \'active\' : \'\' ]">数组语法</div>',
         '    <div :style="styleObj">style 对象语法</div>',
         '    <button @click="isActive = !isActive">toggle active</button>',
         '    <button @click="hasError = !hasError">toggle error</button>',

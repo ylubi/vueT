@@ -21,124 +21,343 @@ const copyCode = async (content, i) => {
 </script>
 
 <template>
-<aside class="guide prose">
-    <h3 class="guide-title">{{ props.title }}</h3>
-    <p v-if="props.intro" class="guide-intro">{{ props.intro }}</p>
-    <div v-if="props.details.length" class="guide-details">
-      <p v-for="(d, di) in props.details" :key="di" class="detail">{{ d }}</p>
+  <aside class="guide-panel">
+    <!-- 概述部分 -->
+    <div class="concept-overview">
+      <h3 class="section-title">{{ props.title }}</h3>
+      <p v-if="props.intro" class="overview-text">{{ props.intro }}</p>
     </div>
-    <ol class="guide-steps">
-      <li v-for="(s, i) in props.steps" :key="i">{{ s }}</li>
-    </ol>
-    <div v-if="props.code.length" class="guide-code">
-      <div v-for="(c, i) in props.code" :key="i" class="code-block">
-        <div class="code-head">
-          <div class="code-title">{{ c.title }}</div>
-          <button class="copy-btn" @click="copyCode(c.content, i)">{{ copiedIndex === i ? '已复制' : '复制' }}</button>
-        </div>
-        <div class="code-lines">
-          <div v-for="(line, li) in c.content.split('\n')" :key="li" class="code-line">
-            <span class="ln">{{ li + 1 }}</span>
-            <span class="lc">{{ line }}</span>
+    
+    <!-- 核心概念 -->
+    <div v-if="props.details.length" class="core-concepts">
+      <h4 class="section-title">核心概念</h4>
+      <div class="concepts-grid">
+        <div v-for="(d, di) in props.details" :key="di" class="concept-item">
+          <div class="concept-icon">💡</div>
+          <div class="concept-content">
+            <div class="concept-desc">{{ d }}</div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- 学习步骤 -->
+    <div v-if="props.steps.length" class="learning-steps">
+      <h4 class="section-title">学习步骤</h4>
+      <div class="steps-grid">
+        <div v-for="(s, i) in props.steps" :key="i" class="step-item">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-content">{{ s }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 代码示例 -->
+    <div v-if="props.code.length" class="code-examples">
+      <h4 class="section-title">代码示例</h4>
+      <div class="examples-grid">
+        <div v-for="(c, i) in props.code" :key="i" class="example-item">
+          <div class="example-header">
+            <div class="example-title">{{ c.title }}</div>
+            <button class="copy-btn" @click="copyCode(c.content, i)">{{ copiedIndex === i ? '已复制' : '复制' }}</button>
+          </div>
+          <div class="code-block">
+            <pre><code>{{ c.content }}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 学习建议 -->
+    <div class="learning-tips">
+      <h4 class="section-title">学习建议</h4>
+      <div class="tips-list">
+        <div class="tip-item">
+          <span class="tip-icon">🎯</span>
+          <span class="tip-text">结合实际代码练习，加深理解</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">📚</span>
+          <span class="tip-text">参考Vue官方文档获取更多详细信息</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">💻</span>
+          <span class="tip-text">在Playground中尝试相关示例</span>
+        </div>
+      </div>
+    </div>
+    
     <slot />
   </aside>
   
 </template>
 
 <style scoped>
-.guide {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
+.guide-panel {
   background: #ffffff;
-  box-shadow: 0 4px 18px rgba(17, 24, 39, 0.06);
-  margin: 0 0 16px 0;
-  text-align: left;
-}
-.guide-title {
-  margin: 0 0 6px 0;
-  font-size: 18px;
-  font-weight: 600;
   color: #0f172a;
-}
-.guide-intro {
-  margin: 6px 0 10px 0;
-  color: #4b5563;
-  white-space: pre-wrap;
-}
-.guide-details {
-  display: grid;
-  gap: 8px;
-  margin: 8px 0 10px 0;
-}
-.detail {
-  color: #374151;
-}
-.guide-steps {
-  margin: 0;
-  padding-left: 18px;
-}
-.guide-steps li {
-  margin: 6px 0;
-}
-.guide-code {
-  margin-top: 12px;
-}
-.code-block {
-  background: #0f172a;
-  color: #e5e7eb;
-  border-radius: 10px;
-  padding: 12px;
-  margin: 10px 0;
   overflow: hidden;
-  border: 1px solid #1f2937;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.code-head {
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #35495e;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 16px;
+  background: #42b883;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+/* 概述部分样式 */
+.concept-overview {
+  margin-bottom: 16px;
+}
+
+.overview-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #334155;
+  margin: 0 0 8px 0;
+}
+
+.overview-text p {
+  margin: 0 0 8px 0;
+}
+
+.overview-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* 核心概念样式 */
+.core-concepts {
+  margin-bottom: 16px;
+}
+
+.concepts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.concept-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.concept-item:hover {
+  background: #ffffff;
+  border-color: #42b883;
+}
+
+.concept-icon {
+  font-size: 16px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.concept-content {
+  flex: 1;
+}
+
+.concept-desc {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* 学习步骤样式 */
+.learning-steps {
+  margin-bottom: 16px;
+}
+
+.steps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.step-item:hover {
+  background: #ffffff;
+  border-color: #42b883;
+}
+
+.step-number {
+  background: #42b883;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-content {
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* 代码示例样式 */
+.code-examples {
+  margin-bottom: 16px;
+}
+
+.examples-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.example-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.example-item:hover {
+  background: #ffffff;
+  border-color: #42b883;
+}
+
+.example-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  padding: 8px 12px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
 }
-.code-title {
+
+.example-title {
   font-size: 13px;
-  color: #60a5fa;
+  color: #35495e;
   font-weight: 600;
 }
-.code-lines {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    'Liberation Mono', 'Courier New', monospace;
-  background: #0b1220;
-  border: 1px solid #334155;
-  border-radius: 6px;
-  padding: 8px;
-  max-height: 340px;
-  overflow: auto;
-}
-.code-line {
-  display: grid;
-  grid-template-columns: 38px 1fr;
-  gap: 8px;
-}
-.ln {
-  color: #9ca3af;
-  text-align: right;
-}
-.lc {
-  white-space: pre-wrap;
-}
+
 .copy-btn {
   background: #1f2937;
   color: #e5e7eb;
   border: none;
-  border-radius: 6px;
-  padding: 4px 10px;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
+
 .copy-btn:hover {
   background: #374151;
+}
+
+.code-block {
+  background: #1e293b;
+  border-radius: 0 0 4px 4px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.code-block code {
+  color: #ffffff;
+  white-space: pre;
+}
+
+/* 学习建议样式 */
+.learning-tips {
+  margin-bottom: 16px;
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tip-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.tip-icon {
+  font-size: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.tip-text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .concept-item,
+  .step-item {
+    padding: 8px;
+  }
+  
+  .concept-icon,
+  .step-number {
+    margin-right: 8px;
+  }
+  
+  .concept-desc,
+  .step-content {
+    font-size: 11px;
+  }
+  
+  .tip-text {
+    font-size: 12px;
+  }
+  
+  .code-block pre {
+    font-size: 10px;
+  }
 }
 </style>

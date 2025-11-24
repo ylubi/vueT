@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'vueT',
       script: 'npm',
-      args: 'run preview -- --port 8201',
+      args: 'run preview -- --port 8201 --host 0.0.0.0',
       cwd: __dirname,
       env: { NODE_ENV: 'production' },
       instances: 1,

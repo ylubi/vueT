@@ -69,8 +69,18 @@ button:hover {
 
 #app {
   margin: 0;
-  padding: 24px 0;
+  padding: 8px 0;
   text-align: left;
+}
+
+/* 交互式学习模式下的全局样式调整 */
+body.interactive-mode {
+  overflow: hidden; /* 防止主页面滚动 */
+}
+
+body.interactive-mode #app {
+  padding: 0; /* 移除app padding以最大化空间 */
+  height: 100vh; /* 确保占满全屏 */
 }
 
 p { margin: 6px 0 10px 0; }

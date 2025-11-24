@@ -31,4 +31,7 @@ watch(hash, (h) => {
 <style scoped>
 section { height: calc(100vh - 140px); display: grid; gap: 12px; }
 section > :deep(.vue-repl) { min-height: 0; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 6px 24px rgba(17,24,39,.06); }
+
+/* 修改 split-pane 高度为 90% */
+section > :deep(.vue-repl .split-pane) { height: 90% !important; }
 </style>
