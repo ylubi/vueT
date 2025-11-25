@@ -39,173 +39,11 @@ const toggleKnowledgeTab = () => {
 }
 
 // 获取当前页面的知识数据
+import { guideMap } from '../guide/content.js'
 const getKnowledgeData = () => {
   const slug = getCurrentSlug()
-  const knowledgeMap = {
-    'introduction': {
-      title: 'Vue 3 核心概念',
-      points: [
-        '🎯 声明式渲染：模板与状态的关系',
-        '⭐ 响应式数据：修改数据自动更新视图',
-        '✨ 双向绑定：输入框与数据同步',
-        '🚀 条件渲染：根据状态显示不同内容'
-      ]
-    },
-    'quick-start': {
-      title: '快速开始指南',
-      points: [
-        '🚀 快速开始：无需构建即可使用',
-        '⚡ Vite 构建：现代化的开发体验',
-        '📦 项目结构：清晰的目录组织',
-        '🔧 开发工具：热更新和构建优化'
-      ]
-    },
-    'essentials-template-syntax': {
-      title: '模板语法要点',
-      points: [
-        '📝 模板语法：基于HTML的扩展',
-        '🔗 插值语法：{{ }} 文本绑定',
-        '🎯 属性绑定：v-bind 或 : 简写',
-        '⚠️ 安全注意：谨慎使用v-html防止XSS'
-      ]
-    },
-    'essentials-reactivity-fundamentals': {
-      title: '响应式基础',
-      points: [
-        '⚡ ref()：创建响应式引用',
-        '🔄 reactive()：创建响应式对象',
-        '📊 .value：访问ref的值',
-        '🎯 自动更新：数据变化驱动视图更新'
-      ]
-    },
-    'essentials-computed': {
-      title: '计算属性',
-      points: [
-        '🧮 computed()：创建计算属性',
-        '💾 缓存机制：基于依赖缓存结果',
-        '⚡ 性能优化：避免重复计算',
-        '🔍 依赖追踪：自动追踪相关数据'
-      ]
-    },
-    'essentials-class-and-style': {
-      title: '类与样式绑定',
-      points: [
-        '🎨 类绑定：:class 对象和数组语法',
-        '💄 样式绑定：:style 对象语法',
-        '🔄 动态切换：根据状态切换类名',
-        '🎯 状态可视化：用样式表达组件状态'
-      ]
-    },
-    'essentials-conditional': {
-      title: '条件渲染',
-      points: [
-        '🌿 条件渲染：v-if/v-else-if/v-else',
-        '👁️ v-show：通过display控制显示',
-        '💡 性能差异：v-if切换时销毁重建',
-        '🎯 使用场景：根据需求选择合适指令'
-      ]
-    },
-    'essentials-list': {
-      title: '列表渲染',
-      points: [
-        '📋 v-for：列表渲染指令',
-        '🔑 :key：提供唯一标识优化性能',
-        '🔄 遍历支持：数组和对象遍历',
-        '⚠️ 最佳实践：避免使用索引作为key'
-      ]
-    },
-    'essentials-event-handling': {
-      title: '事件处理',
-      points: [
-        '🖱️ 事件监听：@click等事件语法',
-        '🛡️ 事件修饰符：.prevent/.stop等',
-        '⌨️ 按键修饰符：.enter/.esc等',
-        '📤 参数传递：事件处理和数据传递'
-      ]
-    },
-    'essentials-forms': {
-      title: '表单输入绑定',
-      points: [
-        '🔄 v-model：双向数据绑定',
-        '📝 表单支持：各种表单元素',
-        '✨ 修饰符：.lazy/.number/.trim',
-        '🔧 自定义：组件的v-model支持'
-      ]
-    },
-    'components-registration': {
-      title: '组件注册',
-      points: [
-        '🌍 全局注册：整个应用可用的组件',
-        '📦 局部注册：特定组件可用的子组件',
-        '📄 SFC结构：单文件组件组织方式',
-        '🔧 组件命名：遵循Vue命名规范'
-      ]
-    },
-    'components-props': {
-      title: 'Props 传参',
-      points: [
-        '📤 props：父到子数据传递',
-        '✅ 类型检查：支持props类型验证',
-        '🔄 单向数据流：子组件不修改props',
-        '📝 默认值：为props提供默认值'
-      ]
-    },
-    'components-events': {
-      title: '事件通信',
-      points: [
-        '📡 defineEmits：定义自定义事件',
-        '📝 命名规范：小写短横线格式',
-        '📊 参数传递：事件可以携带参数',
-        '🔄 子父通信：实现子到父的数据传递'
-      ]
-    },
-    'components-v-model': {
-      title: '组件v-model',
-      points: [
-        '🔄 双向绑定：自定义组件v-model',
-        '📝 modelValue：默认的prop名称',
-        '📤 update:modelValue：默认的事件名称',
-        '🔧 多v-model：支持多个双向绑定'
-      ]
-    },
-    'components-attrs': {
-      title: '透传Attributes',
-      points: [
-        '📋 属性透传：非prop属性自动传递',
-        '🎨 class/style合并：特殊的合并行为',
-        '🚫 inheritAttrs：控制属性继承',
-        '🔧 useAttrs：获取透传属性的工具'
-      ]
-    },
-    'components-slots': {
-      title: '插槽机制',
-      points: [
-        '📦 插槽机制：内容分发API',
-        '📝 默认插槽：未命名插槽内容',
-        '🏷️ 具名插槽：指定名称的插槽',
-        '🔄 作用域插槽：子组件向插槽传值'
-      ]
-    },
-    'components-provide-inject': {
-      title: '依赖注入',
-      points: [
-        '📤 provide：提供依赖给后代组件',
-        '📥 inject：从祖先组件接收依赖',
-        '🌍 跨层级：解决prop逐级传递问题',
-        '⚡ 响应式：支持响应式的provide/inject'
-      ]
-    },
-    'components-async': {
-      title: '异步组件',
-      points: [
-        '⏳ defineAsyncComponent：异步组件定义',
-        '🚀 按需加载：优化应用加载性能',
-        '⚠️ 状态处理：加载状态和错误处理',
-        '🎭 Suspense：配合异步组件使用'
-      ]
-    }
-  }
-  return knowledgeMap[slug] || knowledgeMap['introduction']
+  const item = guideMap[slug]
+  return item ? { title: item.title, points: item.steps || [] } : { title: 'Vue 3 核心概念', points: [] }
 }
 
 // 计算outputMode，根据是否显示知识热点来决定
@@ -357,7 +195,12 @@ watch(showKnowledgeTab, (v) => {
 const hash = ref(props.hash || '')
 
 const { importMap: builtinImportMap, vueVersion } = useVueImportMap({})
-const customImportMap = ref(mergeImportMap(builtinImportMap.value, { imports: { pinia: 'https://unpkg.com/pinia@latest/dist/pinia.mjs' } }))
+const customImportMap = ref(mergeImportMap(builtinImportMap.value, { 
+  imports: { 
+    pinia: 'https://unpkg.com/pinia@latest/dist/pinia.esm-browser.js',
+    '@vue/devtools-api': 'https://unpkg.com/@vue/devtools-api@6.6.4/lib/esm/index.js'
+  } 
+}))
 const storeRef = shallowRef(useStore({ builtinImportMap: customImportMap, vueVersion }, hash.value))
 
 watch(hash, (h) => {

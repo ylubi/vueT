@@ -2,12 +2,24 @@ export const guideRegistry = [
   {
     slug: 'introduction',
     title: '简介',
-    intro: 'Vue 基于标准 HTML/CSS/JS，提供声明式与组件化模型，高效开发 UI。',
-    steps: ['声明式渲染：模板与状态的关系', '响应性：状态变化自动更新 DOM'],
+    intro: 'Vue 是用于构建用户界面的渐进式 JavaScript 框架，基于标准 HTML/CSS/JS，提供声明式、组件化的编程模型，并以响应式系统驱动视图更新。',
+    steps: [
+      '声明式渲染：用模板描述状态与 DOM 的关系',
+      '响应性：自动跟踪状态变化并更新视图',
+      '单文件组件：SFC 封装逻辑/模板/样式',
+      'API 风格：选项式 API 与 组合式 API',
+      '渐进式框架：可逐步集成、覆盖多种使用方式',
+      '使用方式：无需构建、Web Components、SPA、SSR、SSG',
+      '预备知识：熟悉 HTML/CSS/JavaScript 基础'
+    ],
     details: [
-      '核心能力：声明式渲染与响应式系统。',
-      '单文件组件 SFC 将逻辑、模板与样式封装在一个文件中。',
-      '渐进式框架：可逐步引入，支持从无构建到工程化。',
+      'Vue 基于模板语法扩展标准 HTML，声明式描述最终输出与应用状态的关系。',
+      '内置响应式系统会跟踪依赖并在数据变化时高效更新 DOM。',
+      '单文件组件（*.vue）将组件逻辑、模板与样式统一在同一文件中，适合工程化项目。',
+      '选项式 API 通过 data/methods/mounted 等组织代码；组合式 API 通过 setup 与函数组合实现更好的逻辑复用与类型支持。',
+      '作为渐进式框架，Vue 可以按需引入：从简单的脚本标签到完整的工程化生态（路由、状态管理、构建工具等）。',
+      '根据场景选择使用方式：渐进增强静态 HTML、作为 Web Components 嵌入、开发 SPA、全栈/SSR、Jamstack/SSG 等。',
+      '入门建议具备 HTML/CSS/JavaScript 基础知识；对其他框架的经验有帮助但非必需。'
     ],
     code: [
       { title: 'Options API 基本示例', content: 'import { createApp } from \'vue\'\ncreateApp({\n  data(){ return { count:0 } }\n}).mount(\'#app\')' },
@@ -263,35 +275,77 @@ export const guideRegistry = [
   ], replHash: '' },
 
   // 逻辑复用
-  { slug: 'reusability-composables', title: '组合式函数', intro: '用可复用的逻辑函数组织代码。', steps: ['封装状态与副作用', '参数化与返回值', '使用约定'], details: [], code: [], replHash: '' },
-  { slug: 'reusability-custom-directives', title: '自定义指令', intro: '为原生元素编写可复用的行为。', steps: ['指令生命周期', '指令参数与修饰符', '类型提示'], details: [], code: [], replHash: '' },
-  { slug: 'reusability-plugins', title: '插件', intro: '通过插件扩展全局功能。', steps: ['app.use', '全局资源注入', '封装与发布'], details: [], code: [], replHash: '' },
+  { slug: 'reusability-composables', title: '组合式函数', intro: '用可复用的逻辑函数组织代码。', steps: ['封装状态与副作用', '参数化与返回值', '使用约定'], details: [
+    '通过封装 ref/reactive 状态与副作用，形成可复用逻辑块。',
+    '组合式函数接受参数以配置行为，返回 state 与方法。',
+    '命名约定使用 use 前缀，避免在组件外依赖组件实例。',
+    '在 setup 中调用组合式函数以使用生命周期与响应式能力。',
+    '使用 watch/watchEffect 管理副作用与清理。',
+  ], code: [
+    { title: 'useCounter', content: "import { ref } from 'vue'\nexport function useCounter(init = 0){\n  const count = ref(init)\n  const inc = () => count.value++\n  const dec = () => count.value--\n  return { count, inc, dec }\n}" },
+    { title: 'useFetch', content: "import { ref, onMounted } from 'vue'\nexport function useFetch(url){\n  const data = ref(null)\n  const loading = ref(false)\n  const error = ref(null)\n  onMounted(async ()=>{\n    loading.value = true\n    try{\n      const r = await fetch(url)\n      data.value = await r.json()\n    }catch(e){\n      error.value = e\n    }finally{\n      loading.value = false\n    }\n  })\n  return { data, loading, error }\n}" },
+  ], replHash: '' },
+  { slug: 'reusability-custom-directives', title: '自定义指令', intro: '为原生元素编写可复用的行为。', steps: ['指令生命周期', '指令参数与修饰符', '类型提示'], details: [
+    '指令用于对原生元素应用复用的行为，例如聚焦。',
+    '指令钩子包含 created、mounted、updated、unmounted 等。',
+    '通过 binding.value/binding.arg/binding.modifiers 读取参数与修饰符。',
+    '在应用级通过 app.directive 注册，或在组件局部注册。',
+    '使用 TypeScript 可通过 Directive 提供类型提示。',
+  ], code: [
+    { title: '全局指令 v-focus', content: "import { createApp } from 'vue'\nconst app = createApp({})\napp.directive('focus', {\n  mounted(el){ el.focus() }\n})" },
+    { title: '带参数与修饰符', content: "export const vPermission = {\n  mounted(el, binding){\n    const role = binding.arg\n    const exact = !!binding.modifiers.exact\n    const allowed = binding.value\n    if(exact ? !allowed.includes(role) : !allowed.some(r => r===role)){\n      el.style.display = 'none'\n    }\n  }\n}" },
+  ], replHash: '' },
+  { slug: 'reusability-plugins', title: '插件', intro: '通过插件扩展全局功能。', steps: ['app.use', '全局资源注入', '封装与发布'], details: [
+    '插件通过 app.use 安装，执行 install(app, options)。',
+    '可注册全局组件、指令或注入 app.config.globalProperties。',
+    '应保证幂等，重复安装不会产生副作用。',
+    '支持通过 options 配置行为与内容。',
+  ], code: [
+    { title: '简单插件', content: "export default {\n  install(app, options){\n    app.config.globalProperties.$say = msg => console.log(msg)\n  }\n}" },
+    { title: '使用插件', content: "import { createApp } from 'vue'\nimport SayPlugin from './say'\nconst app = createApp({})\napp.use(SayPlugin)" },
+    { title: '提供依赖', content: "export function createI18n(){\n  return { t: (k) => k }\n}\nexport const I18nPlugin = {\n  install(app){\n    const i18n = createI18n()\n    app.provide('i18n', i18n)\n  }\n}" },
+  ], replHash: '' },
 
   // 内置组件
   { slug: 'built-ins-transition', title: 'Transition', intro: '为元素/组件添加进入与离开过渡。', steps: ['基本用法', 'CSS 过渡与动画', '钩子'], details: [
-    '通过过渡名关联 CSS 进入/离开状态类，结合 v-if 切换显示。',
+    '通过过渡名生成类名：xxx-enter-from/active/to 与 xxx-leave-from/active/to。',
+    '支持 CSS 过渡与动画，或使用 JS 钩子精细控制。',
+    '结合 v-if/v-show 切换显示，或在路由/动态组件上使用。',
   ], code: [
     { title: 'App.vue', content: '<script setup>\nimport { ref } from "vue"\nconst show = ref(true)\n</script>\n<template>\n  <button @click="show = !show">toggle</button>\n  <transition name="fade">\n    <p v-if="show">Hello</p>\n  </transition>\n</template>\n<style scoped>\n.fade-enter-active,.fade-leave-active{ transition: opacity .2s ease }\n.fade-enter-from,.fade-leave-to{ opacity: 0 }\n</style>' },
+    { title: 'JS 钩子', content: '<template>\n  <transition @before-enter="onBefore" @after-enter="onAfter" name="fade">\n    <p v-if="show">Hello</p>\n  </transition>\n</template>\n<script setup>\nimport { ref } from "vue"\nconst show = ref(true)\nfunction onBefore(el){}\nfunction onAfter(el){}\n</script>\n<style scoped>\n.fade-enter-active,.fade-leave-active{ transition: opacity .2s ease }\n.fade-enter-from,.fade-leave-to{ opacity: 0 }\n</style>' },
   ], replHash: '' },
   { slug: 'built-ins-transition-group', title: 'TransitionGroup', intro: '为列表的元素提供过渡效果。', steps: ['列表过渡', '移动过渡', '性能考虑'], details: [
     '使用 <transition-group> 包裹列表元素，实现进入/离开的集合动画。',
+    '支持移动过渡，元素顺序变化时应用 transform。',
+    '每个子元素必须有唯一 key，避免渲染错误。',
+    '大型列表注意性能与 DOM 重排的影响。',
   ], code: [
     { title: 'App.vue', content: '<script setup>\nimport { ref } from "vue"\nconst items = ref([1,2,3])\nfunction add(){ items.value.push(items.value.length + 1) }\nfunction remove(){ items.value.pop() }\n</script>\n<template>\n  <div><button @click="add">add</button> <button @click="remove">remove</button></div>\n  <transition-group name="list" tag="ul">\n    <li v-for="i in items" :key="i">Item {{ i }}</li>\n  </transition-group>\n</template>\n<style scoped>\nul{ list-style:none; padding:0; }\n.list-enter-active,.list-leave-active{ transition: all .2s ease }\n.list-enter-from,.list-leave-to{ opacity:0; transform: translateY(6px) }\n</style>' },
   ], replHash: '' },
   { slug: 'built-ins-keep-alive', title: 'KeepAlive', intro: '缓存动态组件以保存状态。', steps: ['include/exclude', 'max', '生命周期与缓存'], details: [
     '使用 <keep-alive> 包裹动态组件可在切换间保留内部状态。',
+    'include/exclude 控制缓存的组件名称集合。',
+    'max 限制缓存数量，超出时按 LRU 策略淘汰。',
+    '在被缓存组件中使用 onActivated/onDeactivated 响应激活与停用。',
   ], code: [
     { title: 'App.vue', content: '<script setup>\nimport { ref } from "vue"\nimport A from "./A.vue"\nimport B from "./B.vue"\nconst view = ref("A")\nconst map = { A, B }\n</script>\n<template>\n  <div><button @click="view = \"A\"">A</button> <button @click="view = \"B\"">B</button></div>\n  <keep-alive><component :is="map[view]" /></keep-alive>\n</template>' },
     { title: 'A.vue', content: '<template>\n  <div>组件 A</div>\n</template>' },
     { title: 'B.vue', content: '<template>\n  <div>组件 B</div>\n</template>' },
+    { title: 'include/max 与激活钩子', content: '<template>\n  <keep-alive :include="[\'A\']" :max="5">\n    <component :is="map[view]" />\n  </keep-alive>\n</template>\n<script setup>\nimport { onActivated, onDeactivated } from "vue"\nonActivated(()=>{})\nonDeactivated(()=>{})\n</script>' },
   ], replHash: '' },
   { slug: 'built-ins-teleport', title: 'Teleport', intro: '将内容传送到指定的 DOM 位置。', steps: ['to 目标', '多个 Teleport', 'SSR 注意事项'], details: [
     '将内容传送到 body 或其他容器，常用于对话框或悬浮层。',
+    '通过 to 指向 CSS 选择器或 DOM 节点。',
+    '可创建多个 Teleport，按照层次进行渲染。',
+    'SSR 下需确保目标容器存在并匹配。',
   ], code: [
     { title: 'App.vue', content: '<script setup>\nimport { ref } from "vue"\nconst open = ref(false)\n</script>\n<template>\n  <button @click="open = true">打开</button>\n  <teleport to="body">\n    <div v-if="open" style="position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center" @click.self="open=false">\n      <div style="background:#fff;padding:12px;border-radius:10px">传送到 body 的对话框</div>\n    </div>\n  </teleport>\n</template>' },
   ], replHash: '' },
   { slug: 'built-ins-suspense', title: 'Suspense', intro: '协调异步依赖并显示占位。', steps: ['默认插槽与 fallback', '异步边界', '组合使用'], details: [
     '在默认插槽加载未完成时展示 fallback，占位友好。',
+    '为异步组件或 async setup 提供加载边界与占位内容。',
+    '可嵌套使用多个 Suspense 实现分层加载。',
   ], code: [
     { title: 'App.vue', content: '<script setup>\nimport AsyncFoo from "./AsyncFoo.vue"\n</script>\n<template>\n  <Suspense>\n    <template #default>\n      <AsyncFoo />\n    </template>\n    <template #fallback>加载中...</template>\n  </Suspense>\n</template>' },
     { title: 'AsyncFoo.vue', content: '<script setup>\nimport { ref, onMounted } from "vue"\nconst ready = ref(false)\nonMounted(async () => { await new Promise(r => setTimeout(r, 1000)); ready.value = true })\n</script>\n<template>\n  <div v-if="ready">异步内容已准备</div>\n</template>' },
@@ -306,17 +360,33 @@ export const guideRegistry = [
     { title: 'App.vue', content: '<script setup>\nimport { ref } from \"vue\"\nimport Child from \"./Child.vue\"\nconst count = ref(0)\n</script>\n<template>\n  <section class=\"wrapper\">\n    <h3>单文件组件 (SFC)</h3>\n    <p>父计数：{{ count }}</p>\n    <button class=\"btn\" @click=\"count++\">count++</button>\n    <Child :count=\"count\" />\n  </section>\n</template>\n<style scoped>\n.wrapper { display: grid; gap: 8px; border: 1px solid #e5e7eb; padding: 10px; border-radius: 8px }\n.btn { background: #10b981; color: #fff; border: none; border-radius: 6px; padding: 6px 10px }\n</style>' },
     { title: 'Child.vue', content: '<script setup>\nconst props = defineProps({ count: { type: Number, default: 0 } })\n</script>\n<template>\n  <div class=\"child\">子组件计数：{{ props.count }}</div>\n</template>\n<style scoped>\n.child { color: #0ea5e9; font-weight: 600 }\n</style>' },
   ], replHash: '' },
-  { slug: 'scaling-up-tooling', title: '工具链', intro: '配套工具与 IDE 支持。', steps: ['Vite', 'TS/ESLint/Prettier', 'IDE 插件'], details: [], code: [], replHash: '' },
+  { slug: 'scaling-up-tooling', title: '工具链', intro: '配套工具与 IDE 支持。', steps: ['Vite', 'TS/ESLint/Prettier', 'IDE 插件'], details: [
+    '使用 Vite 快速开发与构建，内置热更新与静态资源优化。',
+    'TypeScript 与 Vue TS 工具提供更好的类型支持与检查。',
+    'ESLint/Prettier 统一代码风格与质量检查。',
+    'Vue Devtools 用于调试组件树与响应式依赖。',
+  ], code: [
+    { title: 'vite.config.js', content: "import { defineConfig } from 'vite'\nimport vue from '@vitejs/plugin-vue'\nexport default defineConfig({\n  plugins: [vue()],\n  base: '/static/'\n})" },
+  ], replHash: '' },
   { slug: 'scaling-up-routing', title: '路由', intro: '使用 vue-router 管理页面导航。', steps: ['路由表与导航', '动态路由', '路由守卫'], details: [
-    '核心概念：路由记录、导航 API、动态参数。',
-    '在概念演示中可用组件映射模拟路由切换，理解本质。',
-    '实际项目使用 vue-router，支持守卫与懒加载。',
+    '核心概念：路由记录、导航 API、动态参数与嵌套路由。',
+    '支持多种 history 模式：hash/history/内存，按部署场景选择。',
+    '路由级懒加载与代码分割提升首屏性能。',
+    '全局与路由独享守卫可在导航前后拦截处理。',
+    'scrollBehavior 控制切换时的滚动位置与还原。',
   ], code: [
     { title: '概念演示 App.vue', content: '<script setup>\nimport { ref } from \\"vue\\"\nimport Home from \\"./Home.vue\\"\nimport User from \\"./User.vue\\"\nconst current = ref({ name: \\"home\\", params: {} })\nconst routes = { home: Home, user: User }\nfunction go(name, params){ current.value = { name, params: params || {} } }\n</script>\n<template>\n  <section>\n    <h3>路由概念演示</h3>\n    <div><button @click=\\"go(\\\'home\\\')\\">首页</button> <button @click=\\"go(\\\'user\\\', { id: 1 })\\">用户 1</button></div>\n    <component :is=\\"routes[current.name]\\" v-bind=\\"current.params\\" />\n  </section>\n</template>' },
     { title: 'Home.vue', content: '<template>\n  <div>首页</div>\n</template>' },
     { title: 'User.vue', content: '<script setup>\nconst props = defineProps({ id: { type: Number, default: 1 } })\n</script>\n<template>\n  <div>用户页：{{ props.id }}</div>\n</template>' },
+    { title: '创建路由与守卫', content: "import { createRouter, createWebHistory } from 'vue-router'\nimport Home from './Home.vue'\nconst User = () => import('./User.vue')\nexport const router = createRouter({\n  history: createWebHistory(),\n  routes: [\n    { path: '/', name: 'home', component: Home },\n    { path: '/user/:id', name: 'user', component: User, props: true, meta: { requiresAuth: true } },\n  ],\n  scrollBehavior(){ return { top: 0 } }\n})\nrouter.beforeEach((to, from) => {\n  if(to.meta.requiresAuth){ return '/login' }\n})" },
   ], replHash: '' },
-  { slug: 'scaling-up-state-management', title: '状态管理', intro: '在更大规模应用中集中式管理状态。', steps: ['Pinia 基础', '模块与持久化', '调试与性能'], details: [], code: [], replHash: '' },
+  { slug: 'scaling-up-state-management', title: '状态管理', intro: '在更大规模应用中集中式管理状态。', steps: ['Pinia 基础', '模块与持久化', '调试与性能'], details: [
+    '使用 Pinia 管理集中状态，提供可组合的 store。',
+    'store 包含 state/getters/actions，支持类型推导与持久化。',
+    '结合 Devtools 观察状态变化与时间旅行调试。',
+  ], code: [
+    { title: 'Counter Store', content: "import { defineStore } from 'pinia'\nexport const useCounterStore = defineStore('counter', {\n  state: () => ({ count: 0 }),\n  getters: { double: (s) => s.count * 2 },\n  actions: { inc(){ this.count++ } }\n})" },
+  ], replHash: '' },
   { slug: 'scaling-up-testing', title: '测试', intro: '为组件与逻辑编写自动化测试。', steps: ['单元测试', '端到端测试', '快照与覆盖率'], details: [
     '单元测试聚焦纯函数与小型组件的行为验证。',
     '端到端测试覆盖用户流程，保证关键路径稳定。',
@@ -325,30 +395,54 @@ export const guideRegistry = [
     { title: '示例: 被测函数', content: 'export function sum(a, b){ return a + b }' },
     { title: '思路: 单元测试断言', content: '// 伪代码\nexpect(sum(1,2)).toBe(3)\nexpect(sum(-1,1)).toBe(0)' },
   ], replHash: '' },
-  { slug: 'scaling-up-ssr', title: '服务端渲染 (SSR)', intro: '在服务端生成 HTML 以提升首屏和 SEO。', steps: ['基础概念', '同构与数据获取', '部署'], details: [], code: [], replHash: '' },
+  { slug: 'scaling-up-ssr', title: '服务端渲染 (SSR)', intro: '在服务端生成 HTML 以提升首屏和 SEO。', steps: ['基础概念', '同构与数据获取', '部署'], details: [
+    '服务端渲染生成 HTML，客户端进行 hydration 绑定事件。',
+    '支持流式渲染与按路由预取数据以优化首屏。',
+    '部署需要 Node 服务器或适配器，区分服务器与客户端入口。',
+  ], code: [
+    { title: 'server.js', content: "import { renderToString } from '@vue/server-renderer'\nimport { createApp } from './app'\nexport async function render(url){\n  const { app } = createApp()\n  const html = await renderToString(app)\n  return html\n}" },
+    { title: 'client.js', content: "import { createApp } from './app'\ncreateApp().app.mount('#app')" },
+  ], replHash: '' },
 
   // 最佳实践
-  { slug: 'best-practices-production-deployment', title: '生产部署', intro: '为生产环境构建与部署应用。', steps: ['环境变量', '构建产物优化', 'CDN 与缓存'], details: [], code: [], replHash: '' },
+  { slug: 'best-practices-production-deployment', title: '生产部署', intro: '为生产环境构建与部署应用。', steps: ['环境变量', '构建产物优化', 'CDN 与缓存'], details: [
+    '设置环境变量并通过 import.meta.env 读取配置。',
+    '构建产物开启压缩与静态资源指纹，提升缓存命中。',
+    '通过 CDN 与 Cache-Control 管理资源缓存与回源策略。',
+    '配置 base 以匹配部署路径与资源前缀。',
+  ], code: [
+    { title: '读取环境变量', content: '<template>\n  <div>{{ env }}</div>\n</template>\n<script setup>\nconst env = import.meta.env\n</script>' },
+    { title: 'vite base 配置', content: "import { defineConfig } from 'vite'\nexport default defineConfig({ base: '/assets/' })" },
+  ], replHash: '' },
   { slug: 'best-practices-performance', title: '性能优化', intro: '识别并优化性能瓶颈。', steps: ['懒加载与代码分割', '虚拟列表', '响应性优化'], details: [
     '使用 defineAsyncComponent + Suspense 按需加载重组件，降低首屏压力。',
     '大型列表采用虚拟滚动或分页以减少渲染开销。',
     '谨慎创建深层响应式依赖，避免不必要的计算与更新。',
+    '在需要时使用 shallowRef/markRaw 避免深层代理开销。',
+    '通过性能分析工具定位重渲染与长任务。',
   ], code: [
     { title: '懒加载组件', content: '<script setup>\nimport { defineAsyncComponent } from \"vue\"\nconst Heavy = defineAsyncComponent(() => import(\"./Heavy.vue\"))\n</script>\n<template>\n  <Suspense>\n    <template #default>\n      <Heavy />\n    </template>\n    <template #fallback>加载中...</template>\n  </Suspense>\n</template>' },
+    { title: 'shallowRef 与 markRaw', content: "import { shallowRef, markRaw } from 'vue'\nconst chart = shallowRef(null)\nfunction mountChart(){\n  const libChart = markRaw(new SomeChartLib())\n  chart.value = libChart\n}" },
   ], replHash: '' },
   { slug: 'best-practices-accessibility', title: '无障碍访问', intro: '创建对所有人更可达的界面。', steps: ['语义化标签', '可访问表单', '键盘导航'], details: [
     '为表单使用 label 与 id 建立关联，提升可达性。',
     '对状态按钮使用 aria-pressed 反映当前状态。',
     '对话框使用 role="dialog" 与 aria-modal，提供键盘可关闭。',
+    '在路由切换后将焦点移动到主要内容区域。',
+    '确保颜色对比度与可见焦点样式。',
   ], code: [
     { title: '基础表单与 ARIA', content: '<template>\n  <label for=\"name\">姓名</label>\n  <input id=\"name\" />\n  <button aria-pressed=\"false\">切换</button>\n</template>' },
+    { title: '可访问对话框', content: '<template>\n  <div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"title\">\n    <h2 id=\"title\">标题</h2>\n    <button @click=\"close\">关闭</button>\n  </div>\n</template>' },
   ], replHash: '' },
   { slug: 'best-practices-security', title: '安全', intro: '防范常见 Web 安全风险。', steps: ['XSS/CSRF', '依赖安全', '内容安全策略 CSP'], details: [
     '避免对不可信内容使用 v-html，优先文本插值。',
     '使用依赖审计工具与锁定版本，降低供应链风险。',
     '配置 CSP，限制脚本来源与内联执行。',
+    '对敏感请求使用同源策略、SameSite Cookie 与 CSRF 防护。',
+    '对用户输入进行服务端与客户端双重校验与清理。',
   ], code: [
-    { title: 'XSS 风险示例', content: '<script setup>\nimport { ref } from \"vue\"\nconst html = ref(\"<img src=x onerror=\\\'alert(1)\\\' />\")\n</script>\n<template>\n  <div v-html=\"html\"></div>\n</template>' },
+    { title: 'XSS 风险示例', content: '<script setup>\nimport { ref } from "vue"\nconst html = ref("<img src=x onerror=\\\"alert(1)\\\" />")\n</script>\n<template>\n  <div v-html="html"></div>\n</template>' },
+    { title: 'CSP 示例 (HTML)', content: '<head>\n  <meta http-equiv=\"Content-Security-Policy\" content=\"default-src \'self\'; script-src \'self\'\">\n</head>' },
   ], replHash: '' },
 ]
 

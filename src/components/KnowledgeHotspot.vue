@@ -9,6 +9,7 @@ const props = defineProps({
 
 
 
+import { guideMap } from '../guide/content.js'
 const knowledgeMap = {
   'introduction': {
     title: '简介：Vue.js 渐进式 JavaScript 框架',
@@ -173,24 +174,30 @@ const knowledgeMap = {
 
 const currentKnowledge = computed(() => {
   if (props.title || (props.points && props.points.length)) {
-    return {
-      title: props.title || '学习说明',
-      points: props.points && props.points.length ? props.points : ['暂无内容'],
-      slug: props.slug || ''
-    }
+    return { title: props.title || '学习说明', points: props.points && props.points.length ? props.points : ['暂无内容'], slug: props.slug || '' }
   }
-  const mapData = knowledgeMap[props.slug] || {
-    title: 'Vue 知识点',
-    points: ['选择特定页面查看相关知识点']
-  }
-  return {
-    ...mapData,
-    slug: props.slug || ''
-  }
+  const item = guideMap[props.slug]
+  if (item) return { title: item.title, points: item.steps || [], slug: props.slug || '' }
+  const mapData = knowledgeMap[props.slug] || { title: 'Vue 知识点', points: ['选择特定页面查看相关知识点'] }
+  return { ...mapData, slug: props.slug || '' }
 })
 
 // 获取当前页面的详细知识内容
 const getPageKnowledge = () => {
+  const item = guideMap[props.slug]
+  if (item) {
+    const firstCode = Array.isArray(item.code) && item.code.length ? item.code[0].content : ''
+    const steps = Array.isArray(item.steps) ? item.steps : []
+    const details = Array.isArray(item.details) ? item.details : []
+    return {
+      overview: item.title,
+      overviewText: item.intro || '',
+      features: steps.map((s, i) => ({ icon: '👉', title: s, desc: details[i] || '' })),
+      details,
+      scenarios: [],
+      codeExample: firstCode
+    }
+  }
   const pageData = {
     'introduction': {
       overview: 'Vue.js 是什么？',
@@ -901,18 +908,28 @@ function changeView(view) {
             </div>
           </div>
           
-          <div class="core-features">
-            <h4 class="section-title">核心特性</h4>
-            <div class="feature-grid">
-              <div v-for="(feature, index) in getPageKnowledge().features" :key="index" class="feature-item">
-                <div class="feature-icon">{{ feature.icon }}</div>
-                <div class="feature-content">
-                  <div class="feature-title">{{ feature.title }}</div>
-                  <div class="feature-desc">{{ feature.desc }}</div>
-                </div>
-              </div>
+      <div class="core-features">
+        <h4 class="section-title">核心特性</h4>
+        <div class="feature-grid">
+          <div v-for="(feature, index) in getPageKnowledge().features" :key="index" class="feature-item">
+            <div class="feature-icon">{{ feature.icon }}</div>
+            <div class="feature-content">
+              <div class="feature-title">{{ feature.title }}</div>
+              <div class="feature-desc" v-if="feature.desc">{{ feature.desc }}</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div v-if="getPageKnowledge().details && getPageKnowledge().details.length" class="learning-tips">
+        <h4 class="section-title">补充说明</h4>
+        <div class="tips-list">
+          <div v-for="(tip, i) in getPageKnowledge().details" :key="i" class="tip-item">
+            <span class="tip-icon">💡</span>
+            <span class="tip-text">{{ tip }}</span>
+          </div>
+        </div>
+      </div>
           
           <div class="usage-scenarios">
             <h4 class="section-title">使用场景</h4>
