@@ -7,8 +7,8 @@ const AsyncChild = defineAsyncComponent(() => import('./AsyncChild.vue'))
 <template>
   <section>
     <h3>异步组件演示</h3>
-    <button @click="show = !show">toggle</button>
-    <AsyncChild v-if="show" />
+    <button @click="show = !show">{{ show ? '卸载' : '加载' }} AsyncChild</button>
+    <AsyncChild v-if="show" @close="show = false" />
   </section>
 </template>
 

@@ -7,4 +7,5 @@ const styleObj = computed(() => ({ color: color ? color.value : "#374151", fontS
 
 <template>
   <div :style="styleObj">来自 provide 的样式</div>
+  <pre>{{styleObj}}</pre>
 </template>
