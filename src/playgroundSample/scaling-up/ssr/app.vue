@@ -1,14 +1,17 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-const serverData = { user: { name: "Ada" }, ts: 123 }
-const hydrated = ref(false)
-onMounted(() => { hydrated.value = true })
+
 </script>
 
 <template>
   <section>
-    <h3>SSR 概念演示</h3>
-    <p>服务端数据：{{ serverData }}</p>
-    <p>是否已水合：{{ hydrated }}</p>
+    <div class="container">
+      <h3>SSR 概念演示</h3>
+      
+    </div>
   </section>
 </template>
+
+<style scoped>
+section { display: grid; gap: 8px }
+.container { display: grid; gap: 10px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; }
+</style>
