@@ -1,5 +1,6 @@
 import introApp from '../playgroundSample/introduction/app.vue?raw'
 import lifecycleApp from '../playgroundSample/essentials/lifecycle/app.vue?raw'
+import lifecycleChild from '../playgroundSample/essentials/lifecycle/Child.vue?raw'
 import templateSyntaxApp from '../playgroundSample/essentials/template-syntax/app.vue?raw'
 import asyncApp from '../playgroundSample/components/async/app.vue?raw'
 import asyncChild from '../playgroundSample/components/async/AsyncChild.vue?raw'
@@ -62,7 +63,7 @@ import routingUser from '../playgroundSample/scaling-up/routing/User.vue?raw'
 
 const samples = {
   'introduction': { 'App.vue': introApp },
-  'essentials-lifecycle': { 'App.vue': lifecycleApp },
+  'essentials-lifecycle': { 'App.vue': lifecycleApp, 'Child.vue': lifecycleChild },
   'essentials-template-syntax': { 'App.vue': templateSyntaxApp },
   'components-async': { 'App.vue': asyncApp, 'AsyncChild.vue': asyncChild },
   'reusability-composables': { 'App.vue': composablesApp, 'useCounter.js': useCounterJs },

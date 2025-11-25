@@ -14,8 +14,8 @@ const styleObj = computed(() => ({ color: color.value, fontSize: size.value + "p
     <div :class="{ active:isActive, error:hasError }">对象语法</div>
     <div :class="[ baseClass, isActive ? 'active' : '' ]">数组语法</div>
     <div :style="styleObj">style 对象语法</div>
-    <button @click="isActive = !isActive">toggle active</button>
-    <button @click="hasError = !hasError">toggle error</button>
+    <button @click="isActive = !isActive">激活 / 取消</button>
+    <button @click="hasError = !hasError">报错 / 取消</button>
   </section>
 </template>
 
