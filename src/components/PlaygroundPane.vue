@@ -4,7 +4,10 @@ import { useRoute } from 'vue-router'
 import { Repl, useStore, useVueImportMap, mergeImportMap } from '@vue/repl'
 import CodeMirror from '@vue/repl/codemirror-editor'
 import KnowledgeHotspot from './KnowledgeHotspot.vue'
+import playgroundRunBtn from './playgroundRunBtn.vue'
 
+const replRef = ref(null)
+const onRun = () => { replRef.value?.reload() }
 
 const props = defineProps({
   src: { type: String, default: '' },
@@ -233,6 +236,7 @@ const loadFromLink = () => {
         :editor="CodeMirror" 
         :showCompileOutput="false"
         :outputMode="outputMode"
+        ref="replRef"
       />
     </div>
 
@@ -247,7 +251,9 @@ const loadFromLink = () => {
       </div>
     </Teleport>
 
-
+    <Teleport  v-if="teleportReady" to=".split-pane .file-selector" >
+      <div @click="onRun"><playgroundRunBtn /></div>
+    </Teleport>
   </div>
 </template>
 
