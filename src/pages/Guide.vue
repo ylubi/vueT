@@ -4,7 +4,7 @@
     <div class="interactive-learning">
       <div class="playground-wrapper">
         <PlaygroundPane 
-          :files="slug === 'introduction' ? interactiveCode : files" 
+          :files="files" 
           :mainFile="mainFile"
           class="main-playground"
           :learningTitle="data.title + '：学习说明'"
@@ -55,115 +55,6 @@ watch(slug, (newSlug) => {
   history.replaceState({}, '', location.pathname + location.search)
 }, { immediate: true })
 
-// 为简介页面创建交互式学习代码模板
-const interactiveCode = computed(() => {
-  if (slug.value === 'introduction') {
-    const OPEN_SCRIPT = ['<', 'script setup>'].join('')
-    const CLOSE_SCRIPT = ['</', 'script>'].join('')
-    const OPEN_TEMPLATE = ['<', 'template>'].join('')
-    const CLOSE_TEMPLATE = ['</', 'template>'].join('')
-    const OPEN_STYLE = ['<', 'style scoped>'].join('')
-    const CLOSE_STYLE = ['</', 'style>'].join('')
-    
-    const content = [
-      '<!-- 🎯 Vue 的核心概念：声明式渲染 -->',
-      '<!-- 我们只需要描述数据与界面的关系，Vue 负责自动更新 -->',
-      '',
-      OPEN_TEMPLATE,
-      '  <div class="demo">',
-      '    <h1>{{ title }}</h1>',
-      '    <p class="desc">{{ description }}</p>',
-      '    ',
-      '    <!-- ⭐️ 响应式数据：修改 count，Vue 自动更新视图 -->',
-      '    <div class="counter">',
-      '      <button @click="count++">Count is: {{ count }}</button>',
-      '    </div>',
-      '    ',
-      '    <!-- ✨ 双向绑定：输入框与数据同步 -->',
-      '    <div class="binding">',
-      '      <input v-model="text" placeholder="Edit me...">',
-      '      <p>Hello {{ text }}!</p>',
-      '    </div>',
-      '    ',
-      '    <!-- 🚀 条件渲染：根据状态显示不同内容 -->',
-      '    <div class="conditional">',
-      '      <button @click="show = !show">Toggle Text</button>',
-      '      <p v-if="show">Now you see me!</p>',
-      '    </div>',
-      '  </div>',
-      CLOSE_TEMPLATE,
-      '',
-      OPEN_SCRIPT,
-      '// 🎨 Vue 3 Composition API - 现代化的开发方式',
-      "import { ref } from 'vue'",
-      '',
-      '// 📊 响应式状态 - 这就是 Vue 的核心',
-      "const title = ref('Vue 3 简介')",
-      "const description = ref('一个渐进式 JavaScript 框架')",
-      'const count = ref(0)',
-      "const text = ref('Vue')",
-      'const show = ref(true)',
-      CLOSE_SCRIPT,
-      '',
-      OPEN_STYLE,
-      '/* 💄 简洁美观的样式 */',
-      '.demo {',
-      '  max-width: 600px;',
-      '  margin: 0 auto;',
-      '  padding: 40px;',
-      '  text-align: center;',
-      '  font-family: Arial, sans-serif;',
-      '}',
-      '',
-      'h1 {',
-      '  color: #42b883;',
-      '  margin-bottom: 10px;',
-      '}',
-      '',
-      '.desc {',
-      '  color: #666;',
-      '  margin-bottom: 30px;',
-      '}',
-      '',
-      '.counter, .binding, .conditional {',
-      '  margin: 20px 0;',
-      '  padding: 20px;',
-      '  background: #f5f5f5;',
-      '  border-radius: 8px;',
-      '}',
-      '',
-      'button {',
-      '  background: #42b883;',
-      '  color: white;',
-      '  border: none;',
-      '  padding: 10px 20px;',
-      '  border-radius: 4px;',
-      '  cursor: pointer;',
-      '  font-size: 16px;',
-      '}',
-      '',
-      'button:hover {',
-      '  background: #35a372;',
-      '}',
-      '',
-      'input {',
-      '  padding: 8px;',
-      '  border: 1px solid #ddd;',
-      '  border-radius: 4px;',
-      '  margin: 10px 0;',
-      '  width: 200px;',
-      '}',
-      '',
-      'p {',
-      '  margin: 10px 0;',
-      '}',
-      CLOSE_STYLE
-    ].join('\n')
-    
-    return { 'App.vue': content }
-  }
-  return null
-})
 </script>
 
 <style scoped>

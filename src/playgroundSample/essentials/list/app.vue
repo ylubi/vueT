@@ -20,7 +20,7 @@ const n = ref(5)
 
     <div class="group">
       <span class="label">n 次循环({{ n }}):</span>
-      <div class="li" v-for="n in n" :key="n">{{ n }}</div>
+      <div class="li" v-for="i in n" :key="n">{{ i }}</div>
     </div>
     
   </section>
