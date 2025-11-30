@@ -3,9 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "license": "GPL-3.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build-theme.js",
+    "build:vue3": "node scripts/build-theme.js vue3",
+    "test": "vitest",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,6 +21,6 @@
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^27.2.0",
     "vite": "^5.0.0",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.14"
   }
 }

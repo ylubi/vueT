@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { guideMap } from '../guide/content'
+import { menus } from '@template/menus/main.js'
 
 const Guide = () => import('../pages/Guide.vue')
 const Play = () => import('../pages/Play.vue')
 
+// 自动获取第一个有效 slug 作为默认首页
+const firstSlug = menus[0]?.items[0]?.slug || 'introduction'
+
 const routes = [
-  { path: '/', name: 'home', component: Guide },
+  { path: '/', name: 'home', redirect: `/guide/${firstSlug}` },
   { path: '/guide/:slug', name: 'guide', component: Guide },
   { path: '/play', name: 'play', component: Play },
 ]

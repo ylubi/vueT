@@ -1,10 +1,11 @@
-const modules = import.meta.glob('../playgroundSample/**/*.{vue,js}', { query: '?raw', import: 'default', eager: true })
+const modules = import.meta.glob('@template/examples/**/*.{vue,js}', { query: '?raw', import: 'default', eager: true })
 
 const samples = {}
 
 for (const path in modules) {
   const content = modules[path]
-  const rel = path.replace('../playgroundSample/', '')
+  // 统一化路径处理，适配 @template 别名
+  const rel = path.replace(/^.*\/examples\//, '')
   const segs = rel.split('/')
   const category = segs[0]
   const topic = segs.length > 2 ? segs[1] : null
