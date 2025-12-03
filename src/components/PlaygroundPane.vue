@@ -201,7 +201,9 @@ const { importMap: builtinImportMap, vueVersion } = useVueImportMap({})
 const customImportMap = ref(mergeImportMap(builtinImportMap.value, { 
   imports: { 
     pinia: 'https://unpkg.com/pinia@latest/dist/pinia.esm-browser.js',
-    '@vue/devtools-api': 'https://unpkg.com/@vue/devtools-api@6.6.4/lib/esm/index.js'
+    '@vue/devtools-api': 'https://unpkg.com/@vue/devtools-api@6.6.4/lib/esm/index.js',
+    'vue': '/libs/runtime-dom.esm-browser.js',
+    '@vue/runtime-dom': '/libs/runtime-dom.esm-browser.js'
   } 
 }))
 const storeRef = shallowRef(useStore({ builtinImportMap: customImportMap, vueVersion }, hash.value))

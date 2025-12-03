@@ -7,7 +7,7 @@ import { menus } from '@template/menus/main.js'
   <div class="shell">
     <div class="layout">
       <aside class="sidebar">
-      <h3>指南</h3>
+      <h3>Vue 指南</h3>
       <nav class="menu">
         <div v-for="(group, i) in menus" :key="i" class="group">
           <div class="group-title">{{ group.title }}</div>

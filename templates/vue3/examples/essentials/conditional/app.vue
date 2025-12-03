@@ -7,33 +7,57 @@ const ab = ref('a')
 
 <template>
   <section>
-    <h3>条件渲染演示</h3>
-    <div class="group">
-      <span class="label">设置 True / False:</span>
-      <button @click="ok = !ok">设置</button>
-      <span class="value">{{ ok }}</span>
-    </div>
-    <div class="group">
-      <span class="label">v-show 操作:</span>
-      <button @click="visible = !visible">可见 / 隐藏</button>
-      <span v-show="visible" class="value">可见</span>
-    </div>
-
-    <div class="group">
-      <span class="label">v-if 操作:</span>
-      <button @click="ab === 'a' ? ab = 'b' : ab = 'a'">a / b</button>
-      <span v-if="ab === 'a'" class="value">a</span>
-      <span v-if="ab === 'b'" class="value">b</span>
+    <div class="container">
+      <div class="section-container">
+        <h1>条件渲染演示</h1>
+        <span class="desc">v-if 与 v-show</span>
+        <div class="section-item">
+          <span class="remark">v-if 切换：</span>
+          <span class="code">
+            <button @click="ok = !ok">Toggle</button>
+          </span>
+          <span v-if="ok" style="margin-left:8px;color:green">True</span>
+          <span v-else style="margin-left:8px;color:red">False</span>
+        </div>
+        <div class="section-item">
+          <span class="remark">v-show 切换：</span>
+          <span class="code">
+            <button @click="visible = !visible">Toggle</button>
+          </span>
+          <span v-show="visible" style="margin-left:8px">可见内容</span>
+        </div>
+        <div class="section-item">
+          <span class="remark">多条件 v-else-if：</span>
+          <span class="code">
+            <button @click="ab === 'a' ? ab = 'b' : ab = 'a'">Toggle A/B</button>
+          </span>
+          <span v-if="ab === 'a'" style="margin-left:8px">A</span>
+          <span v-else-if="ab === 'b'" style="margin-left:8px">B</span>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.group { display: flex; align-items: center; justify-content: flex-start; padding: 10px 0; border-bottom: 4px solid #eee;}
-.input-group { display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 4px 0;}
-.input-group input {margin-left: 8px;}
-.label { font-weight: bold; margin-right: 8px; }
-.value { flex: 1; }
-.group button { padding: 4px 8px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin: 0 20px; flex-wrap: wrap;}
-.group .form { display: block; flex-direction: column; margin-right: 20px;}
+.container { display: grid; gap: 10px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; }
+.section-container { display: grid; gap: 8px; padding: 12px; border: 1px solid #2ba46d; border-radius: 8px; background: #ffffff; }
+.section-container h1 { font-size: 18px; font-weight: 600; color: #1f2937; }
+.section-container .desc { font-size: 14px; font-weight: 500; color: #4b5563; }
+.section-item { display: flex; align-items: center; gap: 8px; }
+.section-item .remark { font-size: 14px; color: #333; }
+.section-item .code { 
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  color: #111827;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 8px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  display: flex;
+  align-items: center;
+}
+button { padding: 2px 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
 </style>
