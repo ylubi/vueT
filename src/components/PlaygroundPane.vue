@@ -5,6 +5,7 @@ import { Repl, useStore, useVueImportMap, mergeImportMap } from '@vue/repl'
 import CodeMirror from '@vue/repl/codemirror-editor'
 import KnowledgeHotspot from './KnowledgeHotspot.vue'
 import playgroundRunBtn from './playgroundRunBtn.vue'
+import Contact from './Contact.vue'
 
 const replRef = ref(null)
 const onRun = () => { replRef.value?.reload() }
@@ -255,6 +256,10 @@ const loadFromLink = () => {
 
     <Teleport  v-if="teleportReady" to=".split-pane .file-selector" >
       <div @click="onRun"><playgroundRunBtn /></div>
+    </Teleport>
+
+    <Teleport v-if="teleportReady" to=".split-pane .tab-buttons" >
+      <Contact />
     </Teleport>
   </div>
 </template>
