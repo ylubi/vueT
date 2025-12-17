@@ -13,7 +13,8 @@ export const menus = [
       { slug: 'essentials-list', title: '列表渲染' },
       { slug: 'essentials-event-handling', title: '事件处理' },
       { slug: 'essentials-forms', title: '表单输入绑定' },
-      { slug: 'essentials-component-basics', title: '组件基础' }
+      { slug: 'essentials-component-basics', title: '组件基础' },
+      { slug: 'essentials-watchers', title: '侦听器' }
     ]
   },
   {

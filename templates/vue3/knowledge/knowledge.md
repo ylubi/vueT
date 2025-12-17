@@ -482,6 +482,86 @@ const props = defineProps({ msg:String })
 
 ---
 
+# essentials-watchers
+
+## title
+侦听器
+
+## intro
+在响应式状态变化时执行副作用：例如请求数据、写入本地存储、手动控制 DOM。
+
+## steps
+- watch 侦听 ref / getter / 多数据源
+- 用取消函数 / onCleanup 清理副作用与实现防抖
+- 深度侦听 deep 与性能取舍
+- 把“工具逻辑”抽到 util，示例更聚焦 watch
+
+## details
+- watch 默认是懒执行的：只有数据源变化时才触发；需要首轮执行可用 { immediate: true }。
+- watch 的数据源可以是 ref、reactive、getter、或数组；侦听对象属性应写成 getter：watch(() => obj.count, ...)。
+- 清理副作用可以用 watch 回调提供的 onCleanup，或用“返回 cancel 的工具函数”；适合取消定时器/请求，避免竞态与内存泄漏。
+- deep 侦听会遍历嵌套属性，数据结构大时成本更高；能用精确 getter 就不要用 deep。
+- 防抖不是 watch 的内置功能，可以在 watch 中手写 setTimeout + onCleanup，也可以抽成 debounce(fn) 并在 watch 内部取消上一次等待。
+
+## code
+### 防抖输入（watch + debounce + cancel）
+```javascript
+import { ref, watch, onBeforeUnmount } from 'vue'
+import { debounce } from './util.js'
+
+const question = ref('')
+const debounceDelay = ref(500)
+const debouncedQuestion = ref('')
+
+let cancelPendingDebounce = null
+
+watch([question, debounceDelay], ([q, delayMs]) => {
+  if (cancelPendingDebounce) cancelPendingDebounce()
+  const safeDelay = Math.max(0, Number(delayMs) || 0)
+  const delayedUpdate = debounce((value) => { debouncedQuestion.value = value }, safeDelay)
+  cancelPendingDebounce = delayedUpdate.cancel
+  delayedUpdate(q)
+})
+
+onBeforeUnmount(() => {
+  if (cancelPendingDebounce) cancelPendingDebounce()
+})
+```
+
+### watch 副作用（异步模拟）
+```javascript
+import { ref, watch } from 'vue'
+import { mockAskQuestion } from './util.js'
+
+const debouncedQuestion = ref('')
+const answer = ref('')
+const loading = ref(false)
+
+watch(debouncedQuestion, async (q) => {
+  loading.value = true
+  answer.value = 'Thinking...'
+  answer.value = await mockAskQuestion(q, { delayMs: 600 })
+  loading.value = false
+})
+```
+
+### 侦听 getter 与 immediate
+```javascript
+import { ref, watch } from 'vue'
+
+const x = ref(0)
+const y = ref(0)
+const sum = ref(0)
+
+watch(
+  () => x.value + y.value,
+  (newSum) => { sum.value = newSum },
+  { immediate: true }
+)
+```
+
+---
+
 # components-registration
 
 ## title
@@ -1660,4 +1740,3 @@ const html = ref("<img src=x onerror=\"alert(1)\" />")
 ```
 
 ---
-
